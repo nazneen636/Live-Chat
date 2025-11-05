@@ -1,5 +1,5 @@
 import React from "react";
-import assets from "../assets/assets";
+import assets, { messagesDummyData } from "../assets/assets";
 
 const ChatContainer = ({ selectedUser, setSelectedUser }) => {
   return selectedUser ? (
@@ -25,7 +25,34 @@ const ChatContainer = ({ selectedUser, setSelectedUser }) => {
       </div>
 
       {/* chat area */}
-      <div className="flex flex-col h-[calc(100%-120px)] p-3 overflow-y-scroll pb-6"></div>
+      <div className="flex flex-col h-[calc(100%-120px)] p-3 overflow-y-scroll pb-6">
+        {messagesDummyData?.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex items-end justify-end ${
+              msg.senderId !== "680f50e4f10f3cd28382ecf9" && "flex-row-reverse"
+            }`}
+          >
+            {msg.image ? (
+              <img
+                src={msg.image}
+                alt=""
+                className="max-w-[230px] border border-gray-700 rounded-lg overflow-hidden mb-8"
+              />
+            ) : (
+              <p
+                className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${
+                  msg.senderId === "680f50e4f10f3cd28382ecf9"
+                    ? "rounded-br-none"
+                    : "rounded-bl-none"
+                }`}
+              >
+                {msg.text}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   ) : (
     <div
