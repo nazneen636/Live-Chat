@@ -10,7 +10,7 @@ const ChatContainer = ({ selectedUser, setSelectedUser }) => {
     }
   }, [messagesDummyData]);
   return selectedUser ? (
-    <div className="h-full overflow-scroll relative backdrop-blur-lg">
+    <div className="h-full relative backdrop-blur-lg">
       {/* header */}
       <div className="absolute top-0 w-full left-0  flex items-center gap-3 py-3  border-b border-stone-500">
         <img
@@ -78,7 +78,7 @@ const ChatContainer = ({ selectedUser, setSelectedUser }) => {
       </div>
 
       {/* bottom area */}
-      <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3 pb-0">
+      <div className="absolute bottom-2 left-0 right-0 flex items-center gap-3 p-3 pb-0">
         <div className="flex-1 flex items-center bg-gray-100/12 px-3 rounded-full">
           <input
             type="text"

@@ -10,21 +10,25 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    try {
-      console.log(isDataSubmitted);
-      console.log(email);
-      console.log(fullName);
-      console.log(password);
 
-      if (currState === "Sign Up" && !isDataSubmitted) {
-        setIsDataSubmitted(true);
-        return;
-      }
-      login(currState == "Sign Up" ? "signup" : "login");
-    } catch (error) {
-      console.log(error?.response);
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    if (currState === "Sign Up" && !isDataSubmitted) {
+      setIsDataSubmitted(true);
+      return;
+    }
+    const credentials =
+      currState == "Sign Up"
+        ? { fullName, email, password, bio }
+        : { email, password };
+
+    try {
+      const data = await login(
+        currState == "Sign Up" ? "signup" : "login",
+        credentials
+      );
+    } catch (err) {
+      console.log(err);
     }
   };
   return (
