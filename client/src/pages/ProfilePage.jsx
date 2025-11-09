@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import assets from "../assets/assets";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router";
 
 const ProfilePage = () => {
+  const { authUser, updateProfile } = useContext(AuthContext);
   const [profileImage, setProfileImage] = useState(null);
-  const [name, setName] = useState("Martin Stuart");
-  const [bio, setBio] = useState("Hi Everyone, I am Using QuickChat");
+  const [name, setName] = useState(authUser.fullName);
+  const [bio, setBio] = useState(authUser.bio);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name, bio, profileImage);
+    if (!profileImage) {
+      await updateProfile({ fullName: name, bio });
+      navigate("/");
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(profileImage);
+    reader.onload = async () => {
+      const base64Image = reader.result;
+      await updateProfile({ profilePic: base64Image, fullName: name, bio });
+      navigate("/");
+    };
   };
+  if (!authUser) return <div>Loading...</div>;
   return (
     <div className="min-h-screen flex items-center justify-center  text-white">
       <div className="flex flex-col max-sm:flex-col-reverse md:flex-row bg-black/30 backdrop-blur-lg border border-gray-700 rounded-2xl overflow-hidden shadow-lg w-5/6 max-w-2xl ">
@@ -36,7 +52,9 @@ const ProfilePage = () => {
                     : assets.avatar_icon
                 }
                 alt="Profile"
-                className="w-12 h-12 rounded-full object-cover  hover:opacity-80 transition"
+                className={`w-12 h-12  object-cover  hover:opacity-80 transition ${
+                  profileImage && "rounded - full"
+                }`}
               />
               <input
                 type="file"
@@ -94,7 +112,9 @@ const ProfilePage = () => {
         <img
           src={assets.logo_icon}
           alt=""
-          className="max-w-36 rounded-full mx-10 max-sm:mt-10"
+          className={`max-w-36 rounded-full mx-10 max-sm:mt-10 ${
+            profileImage && "rounded - full"
+          }`}
         />
         {/* Right Side - Preview Section */}
         {/* <div className="w-full  flex flex-col items-center justify-center p-8 bg-[#282142]/40">
