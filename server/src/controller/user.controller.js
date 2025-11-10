@@ -32,6 +32,18 @@ export const signUp = asyncHandler(async (req, res) => {
   });
 });
 
+// get all users
+export const allUsers = asyncHandler(async (req, res) => {
+  const allUser = await User.find()
+    .sort({ createdAt: -1 })
+    .select("bio profilePic email fullName");
+
+  if (allUser.length < 1) {
+    throw new customError(401, "User not found");
+  }
+
+  apiResponse.sendSuccess(res, 201, "Retrieved all users", allUser);
+});
 // login
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -46,7 +58,10 @@ export const login = asyncHandler(async (req, res) => {
 
 // controller to check if the user is authenticated
 export const checkAuth = (req, res) => {
-  res.json({ success: true, user: req.user });
+  if (!req.user) {
+    return res.status(401).json({ status: "error", message: "Unauthorized" });
+  }
+  apiResponse.sendSuccess(res, 200, "Authenticated", req.user);
 };
 
 // update profile

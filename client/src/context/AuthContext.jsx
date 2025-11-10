@@ -11,6 +11,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [authUser, setAuthUser] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
 
@@ -18,12 +19,14 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const { data } = await axios.get("/api/auth/check");
-      if (data.success) {
-        setAuthUser(data.user);
-        connectSocket(data.user);
+      if (data.status === "ok") {
+        console.log(data.data);
+        setAuthUser(data.data);
+        connectSocket(data.data);
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error.response?.data?.message || error.message);
+      // console.log(error);
     }
   };
 
@@ -31,17 +34,29 @@ export const AuthProvider = ({ children }) => {
   const login = async (state, credentials) => {
     try {
       const { data } = await axios.post(`/api/auth/${state}`, credentials);
-      // console.log(data, " data");
-
       if (data.status === "ok") {
-        console.log(data);
-
         setAuthUser(data.data);
         connectSocket(data.data);
         axios.defaults.headers.common["token"] = data.token;
         setToken(data.token);
         localStorage.setItem("token", data.token);
         toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error.message);
+    }
+  };
+
+  // get all users
+  const users = async () => {
+    try {
+      const { data } = await axios.post(`/api/auth/all-user`);
+      if (data.status === "ok") {
+        console.log(data);
+        setAllUsers(data);
       } else {
         toast.error(data.message);
       }
@@ -65,13 +80,18 @@ export const AuthProvider = ({ children }) => {
   // update profile function to handle user profile updates
   const updateProfile = async (body) => {
     try {
-      const { data } = await axios.put("/api/auth/update-profile", body);
-      if (data.success) {
-        setAuthUser(data.user);
+      const { data } = await axios.put("/api/auth/update-profile", body, {
+        headers: {
+          Authorization: `Bearer ${authUser.token}`,
+        },
+      });
+      if (data.status === "ok") {
+        setAuthUser(data.data);
         toast.success("Profile updated successfully");
       }
+      console.log(data.data);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -100,6 +120,7 @@ export const AuthProvider = ({ children }) => {
     axios,
     authUser,
     onlineUsers,
+    users,
     socket,
     login,
     logout,
