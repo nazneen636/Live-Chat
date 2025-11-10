@@ -68,11 +68,15 @@ export const checkAuth = (req, res) => {
 export const updateProfile = asyncHandler(async (req, res) => {
   const { profilePic, bio, fullName } = req.body;
   const userId = req.user._id;
+  const user = await User.findById(userId);
+  console.log(user.fullName);
+
+  if (!user) throw new customError(404, "User not found");
   let updateUser;
   if (!profilePic) {
     updateUser = await User.findByIdAndUpdate(
       userId,
-      { bio, fullName },
+      { bio: bio || user.bio, fullName: fullName || user.fullName },
       { new: true }
     );
   } else {
