@@ -12,8 +12,8 @@ const HomePage = () => {
       <div className="backdrop-blur-xl border-2 border-gray-600 rounded-2xl overflow-hidden h-full grid grid-cols-1 relative">
         <div className={`grid ${selectedUser ? "grid-cols-4" : "grid-cols-2"}`}>
           <Sidebar
-            selectedUser={selectedUser}
-            setSelectedUser={setSelectedUser}
+          // selectedUser={selectedUser}
+          // setSelectedUser={setSelectedUser}
           />
           <div className={`${selectedUser ? "col-span-2" : ""}`}>
             <ChatContainer

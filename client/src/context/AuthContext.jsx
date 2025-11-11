@@ -53,16 +53,11 @@ export const AuthProvider = ({ children }) => {
   // get all users
   const users = async () => {
     try {
-      const { data } = await axios.post(`/api/auth/all-user`);
-      if (data.status === "ok") {
-        console.log(data);
-        setAllUsers(data);
-      } else {
-        toast.error(data.message);
-      }
+      const { data } = await axios.get(`/api/auth/all-user`);
+      setAllUsers(data);
     } catch (error) {
       toast.error(error.message);
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
@@ -86,6 +81,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       if (data.status === "ok") {
+        console.log(data, "ok");
         setAuthUser(data.data);
         toast.success("Profile updated successfully");
       }

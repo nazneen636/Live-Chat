@@ -2,23 +2,25 @@ import React, { useContext, useEffect, useState } from "react";
 import assets from "../assets/assets";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 const ProfilePage = () => {
   const { authUser, updateProfile } = useContext(AuthContext);
   const [profileImage, setProfileImage] = useState(null);
-  const [name, setName] = useState(authUser.fullName || "");
-  const [bio, setBio] = useState(authUser.bio || "");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (authUser && authUser.userData) {
-  //     setName(authUser.fullName || "");
-  //     setBio(authUser.bio || "");
-  //   }
-  // }, [authUser]);
+  useEffect(() => {
+    if (authUser) {
+      setName(authUser.fullName || "");
+      setBio(authUser.bio || "");
+    }
+  }, [authUser]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!name.trim()) return;
     if (!profileImage) {
       await updateProfile({ fullName: name, bio });
       navigate("/");
@@ -32,8 +34,10 @@ const ProfilePage = () => {
       navigate("/");
     };
   };
-  if (!authUser) return <div>Loading...</div>;
-  console.log(authUser.fullName);
+  if (!authUser) {
+    console.log("authUser is still loading...");
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center  text-white">
@@ -131,7 +135,7 @@ const ProfilePage = () => {
             Preview
           </h3>
           <img
-            src={authUser.profilePic || assets.avatar_icon}
+            src={authUser?.profilePic || assets.avatar_icon}
             alt="Preview"
             className="w-32 h-32 rounded-full object-cover border-4 border-violet-500/40 mb-4"
           />

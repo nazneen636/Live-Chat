@@ -38,7 +38,6 @@ const LoginPage = () => {
         alt=""
         className="w-[min(40vw,250px)] max-sm:w-40"
       />
-
       {/* form */}
       {/* Right Form */}
       <div className=" flex justify-center items-center">
