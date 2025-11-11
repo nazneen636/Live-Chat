@@ -8,25 +8,30 @@ import { io, userSocketMap } from "../app.js";
 
 export const getUserForSidebar = asyncHandler(async (req, res) => {
   const userId = req.user._id;
+
   const filteredUsers = await User.find({ _id: { $ne: userId } }).select(
     "-password"
   );
-  const unseenMessage = {};
-  const promises = filteredUsers.map(async (user) => {
-    const messages = await Message.find({
-      senderId: user._id,
-      receiverId: userId,
-      seen: false,
-    });
-    if (messages.length > 0) {
-      unseenMessage[user._id] = messages.length;
-    }
-  });
-  await Promise.all(promises);
-  if (!filteredUsers) {
-    throw new customError(401, "message user not found");
+
+  if (!filteredUsers || filteredUsers.length === 0) {
+    throw new customError(404, "No other users found");
   }
-  apiResponse.sendSuccess(res, 201, "messages get successfully", {
+
+  const unseenMessage = {};
+
+  // Count unseen messages per user
+  await Promise.all(
+    filteredUsers.map(async (user) => {
+      const count = await Message.countDocuments({
+        senderId: user._id,
+        receiverId: userId,
+        seen: false,
+      });
+      if (count > 0) unseenMessage[user._id] = count;
+    })
+  );
+
+  return apiResponse.sendSuccess(res, 200, "Messages fetched successfully", {
     users: filteredUsers,
     unseenMessage,
   });

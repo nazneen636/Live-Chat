@@ -11,7 +11,6 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [authUser, setAuthUser] = useState(null);
-  const [allUsers, setAllUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
 
@@ -35,31 +34,38 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.post(`/api/auth/${state}`, credentials);
       if (data.status === "ok") {
-        setAuthUser(data.data);
+        setAuthUser(data.data.user);
         connectSocket(data.data);
-        axios.defaults.headers.common["token"] = data.token;
-        setToken(data.token);
-        localStorage.setItem("token", data.token);
+
+        setToken(data.data.token);
+        localStorage.setItem("token", data.data.token);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${data.data.token}`;
+
         toast.success(data.message);
+        return true; // <-- success
       } else {
         toast.error(data.message);
+        return false; // <-- failed
       }
     } catch (error) {
       toast.error(error.message);
       console.log(error.message);
+      return false;
     }
   };
 
-  // get all users
-  const users = async () => {
-    try {
-      const { data } = await axios.get(`/api/auth/all-user`);
-      setAllUsers(data);
-    } catch (error) {
-      toast.error(error.message);
-      // console.log(error.message);
-    }
-  };
+  // // get all users
+  // const users = async () => {
+  //   try {
+  //     const { data } = await axios.get(`/api/auth/all-user`);
+  //     setAllUsers(data);
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //     // console.log(error.message);
+  //   }
+  // };
 
   // logout function to handle user logout and socket disconnection
   const logout = async () => {
@@ -67,7 +73,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setAuthUser(null);
     setOnlineUsers([]);
-    axios.defaults.headers.common["token"] = null;
+    delete axios.defaults.headers.common["Authorization"];
+
     toast.success("Logged out successfully");
     socket.disconnect();
   };
@@ -77,7 +84,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.put("/api/auth/update-profile", body, {
         headers: {
-          Authorization: `Bearer ${authUser.token}`,
+          // Authorization: `Bearer ${authUser.token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       if (data.status === "ok") {
@@ -107,16 +115,16 @@ export const AuthProvider = ({ children }) => {
   };
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common["token"] = token;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      checkAuth();
     }
-    checkAuth();
   }, []);
 
   const value = {
     axios,
     authUser,
     onlineUsers,
-    users,
+    // users,
     socket,
     login,
     logout,

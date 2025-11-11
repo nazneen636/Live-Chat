@@ -14,13 +14,18 @@ export const ChatProvider = ({ children }) => {
   // function to get all users for sidebar
   const getUsers = async () => {
     try {
-      const { data } = await axios.get("/api/messages/users");
-      if (data.status == "ok") {
+      const token = localStorage.getItem("token");
+      const { data } = await axios.get("/api/messages/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (data.status === "ok") {
         setUsers(data.data.users);
         setUnseenMessages(data.data.unseenMessage);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -28,6 +33,7 @@ export const ChatProvider = ({ children }) => {
   const getMessages = async (userId) => {
     try {
       const { data } = await axios.get(`/api/messages/${userId}`);
+      console.log("USER DATA RESPONSE:", data);
       if (data.status == "ok") {
         setMessages(data.messages);
       }
@@ -39,9 +45,14 @@ export const ChatProvider = ({ children }) => {
   // function to send messages for selected user
   const sendMessages = async (messageData) => {
     try {
+      // const { data } = await axios.post(
+      //   `/api/messages/send/${(selectedUser._id, messageData)}`
+      // );
       const { data } = await axios.post(
-        `/api/messages/send/${(selectedUser._id, messageData)}`
+        `/api/messages/send/${selectedUser._id}`,
+        messageData
       );
+
       if (data.status == "ok") {
         setMessages((prevMessage) => [...prevMessage, data.newMessage]);
       } else {
@@ -85,9 +96,10 @@ export const ChatProvider = ({ children }) => {
     users,
     selectedUser,
     getUsers,
+    getMessages,
     setMessages,
     sendMessages,
-    selectedUser,
+    setSelectedUser,
     unseenMessages,
     setUnseenMessages,
   };

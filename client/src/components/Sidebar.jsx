@@ -12,7 +12,10 @@ const Sidebar = () => {
     unseenMessages,
     setUnseenMessages,
   } = useContext(ChatContext);
+
   const { logout, onlineUsers } = useContext(AuthContext);
+  console.log(onlineUsers);
+
   const [input, setInput] = useState();
   const filteredUsers = input
     ? users.filter((user) =>
@@ -61,7 +64,10 @@ const Sidebar = () => {
         <img src={assets.search_icon} alt="search" className="w-3" />
         <input
           type="text"
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            console.log(input);
+          }}
           className="bg-transparent border-none outline-none text-white text-xs placeholder:[#c8c8c8] flex-1"
           placeholder="search user..."
         />
@@ -94,9 +100,9 @@ const Sidebar = () => {
               )}
             </div>
 
-            {index > 2 && (
+            {unseenMessages[user._id] > 0 && (
               <p className="absolute top-4 right-4 rounded-full flex justify-center items-center  text-xs h-5 w-5 bg-violet-500/50">
-                {index}
+                {unseenMessages[user._id]}
               </p>
             )}
           </div>

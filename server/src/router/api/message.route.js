@@ -8,9 +8,9 @@ import {
   markMessageAsSeen,
   sendMessage,
 } from "../../controller/message.controller.js";
-messageRouter.get("/users", getUserForSidebar);
-messageRouter.get("/:id", getMessages);
-messageRouter.put("mark/:id", protectRoute, markMessageAsSeen);
+messageRouter.get("/users", protectRoute, getUserForSidebar);
+messageRouter.get("/:id", protectRoute, getMessages);
+messageRouter.put("/mark/:id", protectRoute, markMessageAsSeen);
 messageRouter.post("/send/:receiverId", protectRoute, sendMessage);
 
 export default messageRouter;
