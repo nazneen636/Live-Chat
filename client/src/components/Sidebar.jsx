@@ -29,7 +29,7 @@ const Sidebar = () => {
   }, [onlineUsers]);
   return (
     <div
-      className={`bg-[#8185b2]/10 h-full  rounded-r-xl px-3 py-5  text-white  ${
+      className={`bg-[#8185b2]/10 h-full rounded-r-xl px-3 py-5  text-white  ${
         selectedUser ? "max-md:hidden" : ""
       }`}
     >
@@ -60,7 +60,7 @@ const Sidebar = () => {
       </div>
 
       {/* search */}
-      <div className="bg-[#282142] rounded-full flex items-center gap-2 mt-5 py-3 px-4">
+      <div className="bg-[#282142] rounded-full flex items-center gap-2 mt-5 py-3 px-4 ">
         <img src={assets.search_icon} alt="search" className="w-3" />
         <input
           type="text"
@@ -74,7 +74,7 @@ const Sidebar = () => {
       </div>
 
       {/* content */}
-      <div className="flex flex-col gap-2 mt-6 overflow-y-scroll">
+      <div className="flex flex-col gap-2 mt-6 h-[60%] overflow-y-scroll">
         {filteredUsers?.map((user, index) => (
           <div
             onClick={() => {

@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
 console.log(`${backendUrl}/api/auth/check`);
@@ -13,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
+  const navigate = useNavigate();
 
   //   check if user is authenticated and if so, set the user data and connect the socket
   const checkAuth = async () => {
@@ -36,7 +38,6 @@ export const AuthProvider = ({ children }) => {
       if (data.status === "ok") {
         setAuthUser(data.data.user);
         connectSocket(data.data);
-
         setToken(data.data.token);
         localStorage.setItem("token", data.data.token);
         axios.defaults.headers.common[
