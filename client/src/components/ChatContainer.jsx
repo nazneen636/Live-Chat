@@ -3,6 +3,7 @@ import assets, { messagesDummyData } from "../assets/assets";
 import { formatMessageTIme } from "../lib/utils";
 import { ChatContext } from "../context/ChatContext";
 import { AuthContext } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 const ChatContainer = () => {
   const { messages, selectedUser, setSelectedUser, getMessages, sendMessages } =
@@ -11,6 +12,29 @@ const ChatContainer = () => {
   const { authUser, onlineUsers } = useContext(AuthContext);
   const scrollEnd = useRef();
   const [input, setInput] = useState("");
+
+  // handle sending a message
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (input.trim() === "") return null;
+    await sendMessages({ text: input.trim() });
+    setInput("");
+  };
+
+  // handle sending a img
+  const handleSendImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file || !file.type.startsWith("image/")) {
+      toast.error("Select an image file");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = async (e) => {
+      await sendMessages({ image: reader.result });
+      e.target.value = "";
+    };
+    reader.readAsDataURL(file);
+  };
   useEffect(() => {
     if (scrollEnd.current) {
       scrollEnd.current.scrollIntoView({ behavior: "smooth" });
@@ -19,9 +43,9 @@ const ChatContainer = () => {
   return selectedUser ? (
     <div className="h-full relative backdrop-blur-lg">
       {/* header */}
-      <div className="absolute top-0 w-full left-0  flex items-center gap-3 py-3  border-b border-stone-500">
+      <div className="w-full px-4  flex items-center gap-3 py-3  border-b border-stone-500">
         <img
-          src={assets.profile_martin}
+          src={selectedUser.profilePic || assets.avatar_icon}
           alt="profile"
           className="w-8 rounded-full"
         />
@@ -39,7 +63,7 @@ const ChatContainer = () => {
       </div>
 
       {/* chat area */}
-      <div className="absolute top-16 flex flex-1 w-full flex-col h-[75%] p-3 overflow-y-scroll pb-6">
+      <div className="flex-1 w-full flex flex-col p-3 overflow-y-auto max-h-[67vh]">
         {messagesDummyData?.map((msg, index) => (
           <div
             key={index}
@@ -85,14 +109,23 @@ const ChatContainer = () => {
       </div>
 
       {/* bottom area */}
-      <div className="absolute bottom-2 left-0 right-0 flex items-center gap-3 p-3 pb-0">
+      <div className="flex items-center gap-3 p-3 pb-0">
         <div className="flex-1 flex items-center bg-gray-100/12 px-3 rounded-full">
           <input
             type="text"
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+            onKeyDown={(e) => (e.key === "Enter" ? handleSendMessage(e) : null)}
             placeholder="Send a message"
             className="flex-1 text-sm p-3 border-none rounded-lg outline-none text-white placeholder-gray-400"
           />
-          <input type="file" id="image" accept="image/png, image/jpeg" hidden />
+          <input
+            type="file"
+            id="image"
+            onChange={handleSendMessage}
+            accept="image/png, image/jpeg"
+            hidden
+          />
           <label htmlFor="image">
             <img
               src={assets.gallery_icon}
@@ -101,7 +134,7 @@ const ChatContainer = () => {
             />
           </label>
         </div>
-        <img src={assets.send_button} alt="" />
+        <img onClick={handleSendMessage} src={assets.send_button} alt="" />
       </div>
     </div>
   ) : (
