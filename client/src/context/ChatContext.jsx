@@ -76,18 +76,11 @@ export const ChatProvider = ({ children }) => {
         messageData
       );
 
-      if (data.status === "ok") {
-        const newMsg = Array.isArray(data.data)
-          ? data.data[0]
-          : data.data?.newMessage || data.newMessage;
-
-        if (newMsg) {
-          setMessages((prev = []) => [...prev, newMsg]);
-        } else {
-          console.warn("No new message object returned from backend", data);
-        }
+      if (data.status === "ok" && data.data) {
+        setMessages((prev) => [...prev, data.data]);
       } else {
-        toast.error(data.message || "Failed to send message");
+        console.warn("No new message object returned from backend", data);
+        toast.error("Message not returned from server");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);

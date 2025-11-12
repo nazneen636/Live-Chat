@@ -74,11 +74,12 @@ const Sidebar = () => {
       </div>
 
       {/* content */}
-      <div className="flex flex-col gap-2 mt-6 h-[60%] overflow-y-scroll">
+      <div className="flex flex-col gap-2 mt-6 h-[52%] overflow-y-scroll">
         {filteredUsers?.map((user, index) => (
           <div
             onClick={() => {
               setSelectedUser(user);
+              setUnseenMessages((prev) => ({ ...prev, [user._id]: 0 }));
               console.log(setSelectedUser(user));
             }}
             key={index}

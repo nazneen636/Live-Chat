@@ -10,7 +10,7 @@ const ChatContainer = () => {
     useContext(ChatContext);
 
   const { authUser, onlineUsers } = useContext(AuthContext);
-  const scrollEnd = useRef();
+  // const scrollEnd = useRef();
   const [input, setInput] = useState("");
 
   // handle sending a message
@@ -47,8 +47,30 @@ const ChatContainer = () => {
   //     scrollEnd.current.scrollIntoView({ behavior: "smooth" });
   //   }
   // }, [messages]);
+
+  // -------
+  const chatContainerRef = useRef();
+  const scrollEnd = useRef();
+  useEffect(() => {
+    if (!chatContainerRef.current) return;
+    const container = chatContainerRef.current;
+
+    // If user is close to bottom, smooth scroll near bottom (leaving 12px)
+    const isNearBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight <
+      100;
+
+    if (isNearBottom) {
+      container.scrollTo({
+        top: container.scrollHeight - 12,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
+  // -------
   return selectedUser ? (
-    <div className="h-full flex flex-col relative backdrop-blur-lg">
+    <div className="h-full  relative backdrop-blur-lg">
       {/* header */}
       <div className="w-full  px-4  flex items-center gap-3 py-3  border-b border-stone-500">
         <img
@@ -72,7 +94,10 @@ const ChatContainer = () => {
       </div>
 
       {/* chat area */}
-      <div className="w-full  flex flex-col p-3 overflow-y-auto h-[calc(98vh-205px)]">
+      <div
+        className="w-full flex flex-col p-3 overflow-y-auto h-[calc(98vh-205px)]"
+        ref={chatContainerRef}
+      >
         {messages?.map((msg, index) => (
           <div
             key={index}
@@ -114,7 +139,8 @@ const ChatContainer = () => {
             </div>
           </div>
         ))}
-        <div className="" ref={scrollEnd}></div>
+        {/* this is the key line */}
+        <div ref={scrollEnd} />
       </div>
 
       {/* bottom area */}
