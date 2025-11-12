@@ -73,7 +73,7 @@ export const markMessageAsSeen = asyncHandler(async (req, res) => {
 // send message to selected user
 export const sendMessage = asyncHandler(async (req, res) => {
   const { text, image } = req.body;
-  const receiverId = req.params.id;
+  const receiverId = req.params.receiverId;
   const senderId = req.user._id;
 
   let imageUrl;

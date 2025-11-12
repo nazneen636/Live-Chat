@@ -35,31 +35,62 @@ export const ChatProvider = ({ children }) => {
       const { data } = await axios.get(`/api/messages/${userId}`);
       console.log("USER DATA RESPONSE:", data);
       if (data.status == "ok") {
-        setMessages(data.messages);
+        // setMessages(data.data.messages);
+        setMessages(Array.isArray(data.data) ? data.data : []);
+      } else {
+        setMessages([]);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
   // function to send messages for selected user
+  // const sendMessages = async (messageData) => {
+  //   try {
+  //     // const { data } = await axios.post(
+  //     //   `/api/messages/send/${(selectedUser._id, messageData)}`
+  //     // );
+  //     const { data } = await axios.post(
+  //       `/api/messages/send/${selectedUser._id}`,
+  //       messageData
+  //     );
+
+  //     if (data.status == "ok") {
+  //       setMessages((prevMessage = []) => [
+  //         ...prevMessage,
+  //         data.data?.newMessage || data.newMessage,
+  //       ]);
+  //     } else {
+  //       toast.error(data.data.message);
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
+
   const sendMessages = async (messageData) => {
     try {
-      // const { data } = await axios.post(
-      //   `/api/messages/send/${(selectedUser._id, messageData)}`
-      // );
       const { data } = await axios.post(
         `/api/messages/send/${selectedUser._id}`,
         messageData
       );
 
-      if (data.status == "ok") {
-        setMessages((prevMessage) => [...prevMessage, data.newMessage]);
+      if (data.status === "ok") {
+        const newMsg = Array.isArray(data.data)
+          ? data.data[0]
+          : data.data?.newMessage || data.newMessage;
+
+        if (newMsg) {
+          setMessages((prev = []) => [...prev, newMsg]);
+        } else {
+          console.warn("No new message object returned from backend", data);
+        }
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Failed to send message");
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -95,11 +126,10 @@ export const ChatProvider = ({ children }) => {
     messages,
     users,
     selectedUser,
+    setSelectedUser,
     getUsers,
     getMessages,
-    setMessages,
     sendMessages,
-    setSelectedUser,
     unseenMessages,
     setUnseenMessages,
   };

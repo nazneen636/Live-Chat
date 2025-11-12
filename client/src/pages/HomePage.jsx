@@ -15,7 +15,7 @@ const HomePage = () => {
           // selectedUser={selectedUser}
           // setSelectedUser={setSelectedUser}
           />
-          <div className={`${selectedUser ? "col-span-2" : ""}`}>
+          <div className={`${selectedUser ? "col-span-2" : ""} h-full`}>
             <ChatContainer />
           </div>
           {selectedUser && (
