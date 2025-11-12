@@ -42,15 +42,15 @@ const ChatContainer = () => {
     }
   }, [selectedUser]);
 
-  useEffect(() => {
-    if (scrollEnd.current && messages) {
-      scrollEnd.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (scrollEnd.current && messages) {
+  //     scrollEnd.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [messages]);
   return selectedUser ? (
     <div className="h-full flex flex-col relative backdrop-blur-lg">
       {/* header */}
-      <div className="w-full px-4  flex items-center gap-3 py-3  border-b border-stone-500">
+      <div className="w-full  px-4  flex items-center gap-3 py-3  border-b border-stone-500">
         <img
           src={selectedUser.profilePic || assets.avatar_icon}
           alt="profile"
@@ -72,7 +72,7 @@ const ChatContainer = () => {
       </div>
 
       {/* chat area */}
-      <div className="w-full flex flex-col p-3 overflow-y-auto h-[calc(95vh-140px)]">
+      <div className="w-full  flex flex-col p-3 overflow-y-auto h-[calc(98vh-205px)]">
         {messages?.map((msg, index) => (
           <div
             key={index}
