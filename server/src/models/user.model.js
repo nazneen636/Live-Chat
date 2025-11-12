@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    bio: { type: String },
+    bio: { type: String, max: 30 },
     token: {
       type: String,
       default: "",
