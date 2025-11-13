@@ -232,7 +232,7 @@ const ChatContainer = () => {
             />
           </label>
         </div>
-        <div className="w-12 h-12 text-xl rounded-full bg-linear-to-r text-white flex items-center justify-center from-cyan-400 to-cyan-800">
+        <div className="w-12 h-12 text-xl rounded-full bg-linear-to-r text-white flex items-center justify-center from-[#5757cf] to-[#34348f]">
           <BsFillSendFill />
         </div>
         {/* <img onClick={handleSendMessage} src={assets.send_button} alt="" /> */}

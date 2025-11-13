@@ -50,10 +50,26 @@ export const getMessages = asyncHandler(async (req, res) => {
       },
     ],
   });
+
+  // Find unseen messages from this user
+  const unseenMessages = await Message.find({
+    senderId: selectedUserId,
+    receiverId: myId,
+    seen: false,
+  });
+
   await Message.updateMany(
     { senderId: selectedUserId, receiverId: myId },
     { seen: true }
   );
+
+  // Emit "messageSeen" to the sender for each message
+  unseenMessages.forEach((msg) => {
+    const senderSocketId = userSocketMap[msg.senderId];
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("messageSeen", { messageId: msg._id });
+    }
+  });
   if (!messages) {
     throw new customError("something went wrong to get message");
   }
