@@ -5,6 +5,8 @@ import { ChatContext } from "../context/ChatContext";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { BsFillSendFill } from "react-icons/bs";
+import EmojiPicker from "emoji-picker-react";
+import { FaRegSmile } from "react-icons/fa";
 const ChatContainer = () => {
   const { messages, selectedUser, setSelectedUser, getMessages, sendMessages } =
     useContext(ChatContext);
@@ -19,6 +21,7 @@ const ChatContainer = () => {
     if (input.trim() === "") return null;
     await sendMessages({ text: input.trim() });
     setInput("");
+    setShowEmojiPicker(false);
   };
 
   // handle sending a img
@@ -67,6 +70,30 @@ const ChatContainer = () => {
       });
     }
   }, [messages]);
+
+  // emoji
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const inputRef = useRef(null);
+  const handleEmojiClick = (emojiData) => {
+    const emoji = emojiData.emoji;
+    if (!emoji) return;
+    const cursorPos = inputRef.current.selectionStart;
+    const textBefore = input.substring(0, cursorPos);
+    const textAfter = input.substring(cursorPos);
+    const newText = textBefore + emoji + textAfter;
+    setInput(newText);
+    console.log(newText);
+
+    setTimeout(() => {
+      inputRef.current.focus();
+      inputRef.current.setSelectionRange(
+        cursorPos + emoji.length,
+        cursorPos + emoji.length
+      );
+    }, 0);
+  };
+
+  // emoji
 
   // -------
   return selectedUser ? (
@@ -146,8 +173,23 @@ const ChatContainer = () => {
       {/* bottom area */}
       <div className=" flex items-center gap-3 p-3 pb-0">
         <div className="flex-1 flex items-center bg-gray-100/12 px-3 rounded-full">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="mr-2 text-white text-xl"
+            >
+              <FaRegSmile />
+            </button>
+            {showEmojiPicker && (
+              <div className="absolute bottom-12 left-0 z-50">
+                <EmojiPicker onEmojiClick={handleEmojiClick} theme="dark" />
+              </div>
+            )}
+          </div>
           <input
             type="text"
+            ref={inputRef}
             onChange={(e) => setInput(e.target.value)}
             value={input}
             onKeyDown={(e) => (e.key === "Enter" ? handleSendMessage(e) : null)}
