@@ -35,7 +35,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.post(`/api/auth/${state}`, credentials);
       if (data.status === "ok") {
-        setAuthUser(data.data.user);
+        const user = data.data.user || data.data.userData; // ✅ handle both cases
+        const token = data.data.token;
+
+        // set all
+        setAuthUser(user);
+        console.log(user);
+
         connectSocket(data.data);
         setToken(data.data.token);
         localStorage.setItem("token", data.data.token);
