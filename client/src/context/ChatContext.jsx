@@ -9,7 +9,7 @@ export const ChatProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [unseenMessages, setUnseenMessages] = useState({});
-  const { socket, axios, authUser } = useContext(AuthContext);
+  const { socket, axios } = useContext(AuthContext);
 
   // Get all users
   const getUsers = async () => {

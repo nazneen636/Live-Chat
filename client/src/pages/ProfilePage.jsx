@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import assets from "../assets/assets";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
-import axios from "axios";
 
 const ProfilePage = () => {
   const { authUser, updateProfile } = useContext(AuthContext);
