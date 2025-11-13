@@ -36,7 +36,7 @@ const Sidebar = () => {
       {/* logo & menu */}
       <div className="pb-2">
         <div className="flex items-center justify-between">
-          <img src={assets.logo} alt="logo" className="max-w-40" />
+          <img src={assets.logo} alt="logo" className="max-w-16" />
           <div className="relative py-2 group">
             <img
               src={assets.menu_icon}

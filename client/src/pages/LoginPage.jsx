@@ -41,9 +41,9 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center gap-8 sm:justify-evenly max-sm:flex-col backdrop-blur-2xl">
       <img
-        src={assets.logo_big}
+        src={assets.logo}
         alt=""
-        className="w-[min(40vw,250px)] max-sm:w-40"
+        className="w-[min(40vw,350px)] max-sm:w-40"
       />
       {/* form */}
       {/* Right Form */}
@@ -151,12 +151,12 @@ const LoginPage = () => {
             <input
               type="checkbox"
               id="terms"
-              className="accent-violet-500 w-4 h-4"
+              className="accent-cyan-500 w-4 h-4"
               required
             />
             <label htmlFor="terms" className="text-sm text-gray-300">
               I agree to the{" "}
-              <a href="#" className="text-violet-400 hover:underline">
+              <a href="#" className="text-cyan-400 hover:underline">
                 Terms & Conditions
               </a>
             </label>
@@ -165,7 +165,7 @@ const LoginPage = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-2 bg-linear-to-r from-purple-400 to-violet-600 rounded-full font-medium text-white hover:opacity-90 transition duration-200"
+            className="w-full py-2 bg-linear-to-r from-[#292977] to-[#1e1e55] cursor-pointer hover:opacity-75 rounded-full font-medium text-white  transition duration-200"
           >
             {currState === "Sign Up" ? "Create an account" : "Login"}
           </button>
@@ -181,7 +181,7 @@ const LoginPage = () => {
                       setCurrState("Login");
                       setIsDataSubmitted(false);
                     }}
-                    className="text-violet-400 hover:underline"
+                    className="text-cyan-400 hover:underline"
                   >
                     Login
                   </span>
@@ -196,7 +196,7 @@ const LoginPage = () => {
                       setCurrState("Sign Up");
                       setIsDataSubmitted(false);
                     }}
-                    className="text-violet-400 hover:underline"
+                    className="text-cyan-400 hover:underline"
                   >
                     Click here
                   </span>

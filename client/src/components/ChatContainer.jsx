@@ -4,7 +4,7 @@ import { formatMessageTIme } from "../lib/utils";
 import { ChatContext } from "../context/ChatContext";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
-
+import { BsFillSendFill } from "react-icons/bs";
 const ChatContainer = () => {
   const { messages, selectedUser, setSelectedUser, getMessages, sendMessages } =
     useContext(ChatContext);
@@ -76,7 +76,7 @@ const ChatContainer = () => {
         <img
           src={selectedUser.profilePic || assets.avatar_icon}
           alt="profile"
-          className="w-8 rounded-full"
+          className="w-9 h-9 object-cover rounded-full"
         />
         <p className="flex-1 text-lg text-white flex items-center gap-2">
           {selectedUser.fullName || ""}
@@ -131,7 +131,7 @@ const ChatContainer = () => {
                     : selectedUser?.profilePic || assets.avatar_icon
                 }
                 alt=""
-                className="w-7 rounded-full"
+                className="w-8 h-8 rounded-full object-cover"
               />
               <p className="text-gray-500">
                 {formatMessageTIme(msg.createdAt)}
@@ -169,7 +169,10 @@ const ChatContainer = () => {
             />
           </label>
         </div>
-        <img onClick={handleSendMessage} src={assets.send_button} alt="" />
+        <div className="w-12 h-12 text-xl rounded-full bg-linear-to-r text-white flex items-center justify-center from-cyan-400 to-cyan-800">
+          <BsFillSendFill />
+        </div>
+        {/* <img onClick={handleSendMessage} src={assets.send_button} alt="" /> */}
       </div>
     </div>
   ) : (
@@ -177,7 +180,7 @@ const ChatContainer = () => {
       className="flex flex-col items-center justify-center bg-white/10 max-md:hidden gap-2 text-gray-200 h-full
     "
     >
-      <img src={assets.logo_icon} className="max-w-16" alt="" />
+      <img src={assets.logo_icon} className="max-w-44" alt="" />
       <p className="text-lg font-medium text-white">Chat anytime anywhere</p>
     </div>
   );

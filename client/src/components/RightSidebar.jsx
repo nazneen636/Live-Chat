@@ -23,7 +23,7 @@ const RightSidebar = () => {
           <img
             src={selectedUser.profilePic || assets.avatar_icon}
             alt=""
-            className="w-20 aspect-square rounded-full"
+            className="w-20 aspect-square object-cover rounded-full"
           />
           <h1 className="px-10 text-xl font-medium mx-auto flex items-center gap-2 text-nowrap">
             {onlineUsers.includes(selectedUser._id) && (
@@ -59,7 +59,7 @@ const RightSidebar = () => {
         {/* btn  */}
         <button
           onClick={() => logout()}
-          className="mt-6 ml-1 bg-linear-to-r from-purple-400 to-violet-600 text-white border-none text-sm font-light py-2 px-20 rounded-full cursor-pointer"
+          className="mt-6 ml-1 bg-linear-to-r from-cyan-400 to-cyan-800 text-white border-none text-base font-medium py-2 px-20 rounded-full cursor-pointer"
         >
           Logout
         </button>

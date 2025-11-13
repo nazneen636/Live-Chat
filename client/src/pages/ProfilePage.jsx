@@ -116,7 +116,7 @@ const ProfilePage = () => {
           {/* Save Button */}
           <button
             type="submit"
-            className="w-full py-2 bg-linear-to-r from-purple-400 to-violet-600 rounded-full font-medium text-white hover:opacity-90 transition duration-200"
+            className="w-full py-2 bg-linear-to-r from-[#292977] to-[#1e1e55] cursor-pointer hover:opacity-75 rounded-full font-medium text-white  transition duration-200"
           >
             Save Changes
           </button>
