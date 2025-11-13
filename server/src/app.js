@@ -5,7 +5,6 @@ import http from "http";
 import globalError from "./helpers/globalError.js";
 import mainRoute from "./router/index.js";
 import { Server } from "socket.io";
-import { log } from "console";
 const app = express();
 const server = http.createServer(app);
 
