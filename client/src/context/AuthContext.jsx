@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
-  const navigate = useNavigate();
 
   //   check if user is authenticated and if so, set the user data and connect the socket
   const checkAuth = async () => {
@@ -43,7 +42,6 @@ export const AuthProvider = ({ children }) => {
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${data.data.token}`;
-
         toast.success(data.message);
         return true; // <-- success
       } else {
