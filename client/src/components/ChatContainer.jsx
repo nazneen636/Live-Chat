@@ -8,8 +8,14 @@ import { BsFillSendFill } from "react-icons/bs";
 import EmojiPicker from "emoji-picker-react";
 import { FaRegSmile } from "react-icons/fa";
 const ChatContainer = () => {
-  const { messages, selectedUser, setSelectedUser, getMessages, sendMessages } =
-    useContext(ChatContext);
+  const {
+    messages,
+    selectedUser,
+    setSelectedUser,
+    getMessages,
+    sendMessages,
+    unseenMessages,
+  } = useContext(ChatContext);
 
   const { authUser, onlineUsers } = useContext(AuthContext);
   // const scrollEnd = useRef();
@@ -128,28 +134,43 @@ const ChatContainer = () => {
         {messages?.map((msg, index) => (
           <div
             key={index}
-            className={`flex items-end gap-2 justify-end ${
+            className={`flex relative items-end gap-2 justify-end ${
               msg.senderId !== authUser._id && "flex-row-reverse"
             }`}
           >
-            {msg.image ? (
-              <img
-                src={msg.image}
-                alt=""
-                className="max-w-[230px] border border-gray-700 rounded-lg overflow-hidden mb-8"
-              />
-            ) : (
-              <p
-                className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${
-                  msg.senderId === authUser._id
-                    ? "rounded-br-none"
-                    : "rounded-bl-none"
-                }`}
-              >
-                {msg.text}
-              </p>
-            )}
-
+            <div className="relative">
+              {msg.image ? (
+                <img
+                  src={msg.image}
+                  alt=""
+                  className="max-w-[230px] border border-gray-700 rounded-lg overflow-hidden mb-8"
+                />
+              ) : (
+                <p
+                  className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${
+                    msg.senderId === authUser._id
+                      ? "rounded-br-none"
+                      : "rounded-bl-none"
+                  }`}
+                >
+                  {msg.text}
+                </p>
+              )}
+              {/* seen msg */}
+              <div className="absolute bottom-1 right-1">
+                {index === messages.length - 1 &&
+                  msg.senderId === authUser._id && (
+                    <span className="ml-1 text-xs">
+                      {msg.seen ? (
+                        <span className="text-cyan-400">Seen</span>
+                      ) : (
+                        <span className="text-gray-300">Delivered</span>
+                      )}
+                    </span>
+                  )}
+              </div>
+              {/* seen msg */}
+            </div>
             <div className="text-center text-xs">
               <img
                 src={
