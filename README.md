@@ -42,6 +42,11 @@ It includes real-time message delivery, seen status, image sharing, and dynamic 
 
 - Vercel
 
+## 🚀 Live Demo
+
+🔗 **Frontend:** https://live-chat-fr.vercel.app  
+🔗 **Backend API:** https://live-chat-backend-eight.vercel.app
+
 ## 📸 Screenshots
 
 <div align="center">
