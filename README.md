@@ -1,21 +1,54 @@
-<h1 align="center">Welcome to Live-Chat 👋</h1>
-<p>
-</p>
+# Real-Time Chat App
+A full-stack real-time chat application built with React, Next.js, Node.js, Express, MongoDB, and Socket.io.  
+It includes real-time message delivery, seen status, image sharing, and dynamic unseen message counters.
 
-> A simple, fast real-time chat application built with MERN Stack and Socket.io. Supports real-time messaging, online user tracking and secure authentication.
+## 🚀 Features
+- ⚡ Real-time messaging using Socket.io  
+- 👁️ Message delivered & seen status  
+- 🔔 Unseen message counters for each user  
+- 🖼️ Image uploads using Cloudinary  
+- 🔐 Secure JWT authentication  
+- 📱 Fully responsive UI (Next.js + Tailwind)  
+- 📦 Scalable backend with modular API structure  
+- ☁️ Deployment-ready (Frontend & Backend on Vercel)
 
-### ✨ [Demo](https://live-chat-fr.vercel.app/)
+## 🛠️ Tech Stack
 
-## Author
+### **Frontend**
+- React.js    
+- Tailwind CSS  
 
-👤 **Nazneen Nahar Rima**
+### **Backend**
+- Node.js  
+- Express.js  
 
-* Github: [@nazneen636](https://github.com/nazneen636)
-* LinkedIn: [@nazneen636](https://linkedin.com/in/nazneen636)
+### **Database**
+- MongoDB (Mongoose)
 
-## Show your support
+### **Realtime**
+- Socket.io  
 
-Give a feedback if this project helped you!
+### **Image Hosting**
+- Cloudinary  
 
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+### **Deployment**
+- Vercel  
+
+## 📸 Screenshots
+
+<div align="center">
+
+### 🗨️ Chat Interface
+<img src="./screenshots/chat-ui.png" width="600" />
+
+---
+
+### 🔐 Authentication (Login / Signup)
+<img src="./screenshots/auth.png" width="600" />
+
+---
+
+### 📤 Image Upload inside Chat
+<img src="./screenshots/image-upload.png" width="600" />
+
+</div>
